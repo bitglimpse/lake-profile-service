@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/lake-profile")
@@ -15,12 +16,17 @@ public class Endpoint {
 
     @RequestMapping(value = "/{profileId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getLakeProfile(@PathVariable Long profileId) {
-        return new ResponseEntity(lakeProfileRepository.findById(profileId), HttpStatus.OK);
+        Optional<LakeProfile> lakeProfile = lakeProfileRepository.findById(profileId);
+        if (!lakeProfile.isPresent()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity(lakeProfile, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity addLakeProfile(@RequestBody LakeProfile lakeProfile) {
+    public ResponseEntity addLakeProfile(@RequestBody LakeProfile lakeProfile) throws InterruptedException {
         LakeProfile savedProfile = new LakeProfile();
+        Thread.sleep(2000); // This simulates real-world database latency
         savedProfile.setId(lakeProfileRepository.save(lakeProfile).getId());
         return new ResponseEntity(savedProfile, HttpStatus.ACCEPTED);
     }
