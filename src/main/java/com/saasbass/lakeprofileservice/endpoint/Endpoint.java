@@ -1,5 +1,7 @@
-package com.saasbass.lakeprofileservice;
+package com.saasbass.lakeprofileservice.endpoint;
 
+import com.saasbass.lakeprofileservice.domain.LakeProfile;
+import com.saasbass.lakeprofileservice.domain.LakeProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

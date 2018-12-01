@@ -1,4 +1,4 @@
-package com.saasbass.lakeprofileservice;
+package com.saasbass.lakeprofileservice.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
