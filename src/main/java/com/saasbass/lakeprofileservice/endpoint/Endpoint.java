@@ -19,11 +19,9 @@ public class Endpoint {
     LakeProfileRepository lakeProfileRepository;
 
     @RequestMapping(value = "/{profileId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getLakeProfile(@PathVariable Long profileId) {
-        // Simulated timeout exception
-//        while(true) {
-//            System.out.println("create profile");
-//        }
+    public ResponseEntity getLakeProfile(@PathVariable Long profileId) throws InterruptedException
+    {
+        Thread.sleep(4000);
 
         Optional<LakeProfile> lakeProfile = lakeProfileRepository.findById(profileId);
         if (!lakeProfile.isPresent()) {
@@ -34,8 +32,7 @@ public class Endpoint {
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addLakeProfile(@RequestBody LakeProfile lakeProfile) throws InterruptedException, SocketException {
-        // Simulated socket exception due to server overload
-        // throw new SocketException();
+        //throw new SocketException();
 
         LakeProfile savedProfile = new LakeProfile();
         Thread.sleep(2000); // This simulates real-world database latency
