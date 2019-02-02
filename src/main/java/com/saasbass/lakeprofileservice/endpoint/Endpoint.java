@@ -33,7 +33,7 @@ public class Endpoint {
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addLakeProfile(@RequestBody LakeProfile lakeProfile) throws InterruptedException, SocketException {
         // Simulate a temporary socket exception caused by temporary server overload
-        if (addLakeProfileRequestCount < 3) {
+        if (addLakeProfileRequestCount < 2) {
             addLakeProfileRequestCount++;
             throw new SocketException();
         }
