@@ -21,6 +21,8 @@ public class Endpoint {
     @RequestMapping(value = "/{profileId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getLakeProfile(@PathVariable Long profileId) throws InterruptedException
     {
+        // This simulates a timeout exception because delays lake profile client for one second longer than
+        // its 3 second configured read timeout threshold
         Thread.sleep(4000);
 
         Optional<LakeProfile> lakeProfile = lakeProfileRepository.findById(profileId);
@@ -31,9 +33,7 @@ public class Endpoint {
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity addLakeProfile(@RequestBody LakeProfile lakeProfile) throws InterruptedException, SocketException {
-        //throw new SocketException();
-
+    public ResponseEntity addLakeProfile(@RequestBody LakeProfile lakeProfile) throws InterruptedException {
         LakeProfile savedProfile = new LakeProfile();
         Thread.sleep(2000); // This simulates real-world database latency
         savedProfile.setId(lakeProfileRepository.save(lakeProfile).getId());
