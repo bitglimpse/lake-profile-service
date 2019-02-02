@@ -18,11 +18,11 @@ public class Endpoint {
     @Autowired
     LakeProfileRepository lakeProfileRepository;
 
+    private int addLakeProfileRequestCount = 0;
+
     @RequestMapping(value = "/{profileId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getLakeProfile(@PathVariable Long profileId) throws InterruptedException
     {
-        Thread.sleep(4000);
-
         Optional<LakeProfile> lakeProfile = lakeProfileRepository.findById(profileId);
         if (!lakeProfile.isPresent()) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
@@ -32,7 +32,11 @@ public class Endpoint {
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addLakeProfile(@RequestBody LakeProfile lakeProfile) throws InterruptedException, SocketException {
-        //throw new SocketException();
+        // Simulate a temporary socket exception caused by temporary server overload
+        if (addLakeProfileRequestCount < 3) {
+            addLakeProfileRequestCount++;
+            throw new SocketException();
+        }
 
         LakeProfile savedProfile = new LakeProfile();
         Thread.sleep(2000); // This simulates real-world database latency
