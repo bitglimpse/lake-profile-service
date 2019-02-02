@@ -19,14 +19,22 @@ public class Endpoint {
     LakeProfileRepository lakeProfileRepository;
 
     private int addLakeProfileRequestCount = 0;
+    private int getLakeProfileRequestCount = 0;
 
     @RequestMapping(value = "/{profileId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getLakeProfile(@PathVariable Long profileId) throws InterruptedException
+    public ResponseEntity getLakeProfile(@PathVariable Long profileId) throws InterruptedException, SocketException
     {
+        // Simulate a temporary socket exception caused by temporary server overload
+        if (getLakeProfileRequestCount < 2) {
+            getLakeProfileRequestCount++;
+            throw new SocketException();
+        }
+
         Optional<LakeProfile> lakeProfile = lakeProfileRepository.findById(profileId);
         if (!lakeProfile.isPresent()) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
+        getLakeProfileRequestCount = 0;
         return new ResponseEntity(lakeProfile, HttpStatus.OK);
     }
 
@@ -41,6 +49,7 @@ public class Endpoint {
         LakeProfile savedProfile = new LakeProfile();
         Thread.sleep(2000); // This simulates real-world database latency
         savedProfile.setId(lakeProfileRepository.save(lakeProfile).getId());
+        addLakeProfileRequestCount = 0;
         return new ResponseEntity(savedProfile, HttpStatus.ACCEPTED);
     }
 }
