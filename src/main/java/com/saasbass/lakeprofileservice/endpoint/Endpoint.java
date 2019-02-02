@@ -21,10 +21,6 @@ public class Endpoint {
     @RequestMapping(value = "/{profileId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getLakeProfile(@PathVariable Long profileId) throws InterruptedException
     {
-        // This simulates a timeout exception because delays lake profile client for one second longer than
-        // its 3 second configured read timeout threshold
-        Thread.sleep(4000);
-
         Optional<LakeProfile> lakeProfile = lakeProfileRepository.findById(profileId);
         if (!lakeProfile.isPresent()) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
