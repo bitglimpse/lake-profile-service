@@ -8,7 +8,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.SocketException;
 import java.util.Optional;
 
 @RestController
@@ -25,7 +24,7 @@ public class Endpoint {
     {
         // This simulates a timeout exception because delays lake profile client for one second longer than
         // its 3 second configured read timeout threshold
-        if (getLakeProfileRequestCount < 2) {
+        if (getLakeProfileRequestCount < 5) {
             getLakeProfileRequestCount++;
             Thread.sleep(4000);
         }
