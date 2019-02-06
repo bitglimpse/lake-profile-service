@@ -27,7 +27,7 @@ public class Endpoint {
         // Simulate a temporary socket exception caused by temporary server overload
         if (getLakeProfileRequestCount < 2) {
             getLakeProfileRequestCount++;
-            throw new SocketException();
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         Optional<LakeProfile> lakeProfile = lakeProfileRepository.findById(profileId);
@@ -43,7 +43,7 @@ public class Endpoint {
         // Simulate a temporary socket exception caused by temporary server overload
         if (addLakeProfileRequestCount < 2) {
             addLakeProfileRequestCount++;
-            throw new SocketException();
+            return new ResponseEntity(HttpStatus.SERVICE_UNAVAILABLE);
         }
 
         LakeProfile savedProfile = new LakeProfile();
