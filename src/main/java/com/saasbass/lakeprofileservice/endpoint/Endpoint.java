@@ -8,7 +8,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.SocketException;
 import java.util.Optional;
 
 @RestController
@@ -18,12 +17,17 @@ public class Endpoint {
     @Autowired
     LakeProfileRepository lakeProfileRepository;
 
+    private int getLakeProfileRequestCount = 0;
+
     @RequestMapping(value = "/{profileId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getLakeProfile(@PathVariable Long profileId) throws InterruptedException
     {
         // This simulates a timeout exception because delays lake profile client for one second longer than
         // its 3 second configured read timeout threshold
-        Thread.sleep(4000);
+        if (getLakeProfileRequestCount < 2) {
+            getLakeProfileRequestCount++;
+            Thread.sleep(4000);
+        }
 
         Optional<LakeProfile> lakeProfile = lakeProfileRepository.findById(profileId);
         if (!lakeProfile.isPresent()) {
