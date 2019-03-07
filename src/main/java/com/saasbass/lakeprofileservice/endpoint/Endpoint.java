@@ -18,8 +18,7 @@ public class Endpoint {
     LakeProfileRepository lakeProfileRepository;
 
     @RequestMapping(value = "/{profileId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getLakeProfile(@PathVariable Long profileId)
-    {
+    public ResponseEntity getLakeProfile(@PathVariable Long profileId) {
         Optional<LakeProfile> lakeProfile = lakeProfileRepository.findById(profileId);
         if (!lakeProfile.isPresent()) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
