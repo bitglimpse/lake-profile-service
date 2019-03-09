@@ -22,8 +22,7 @@ public class Endpoint {
     private int getLakeProfileRequestCount = 0;
 
     @RequestMapping(value = "/{profileId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getLakeProfile(@PathVariable Long profileId) throws InterruptedException, SocketException
-    {
+    public ResponseEntity getLakeProfile(@PathVariable Long profileId) {
         // Simulate a temporary socket exception caused by temporary server overload
         if (getLakeProfileRequestCount < 2) {
             getLakeProfileRequestCount++;
@@ -39,7 +38,7 @@ public class Endpoint {
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity addLakeProfile(@RequestBody LakeProfile lakeProfile) throws InterruptedException, SocketException {
+    public ResponseEntity addLakeProfile(@RequestBody LakeProfile lakeProfile) throws InterruptedException {
         // Simulate a temporary socket exception caused by temporary server overload
         if (addLakeProfileRequestCount < 2) {
             addLakeProfileRequestCount++;
