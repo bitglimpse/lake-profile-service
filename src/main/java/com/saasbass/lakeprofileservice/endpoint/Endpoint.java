@@ -20,11 +20,10 @@ public class Endpoint {
     private int getLakeProfileRequestCount = 0;
 
     @RequestMapping(value = "/{profileId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getLakeProfile(@PathVariable Long profileId) throws InterruptedException
-    {
+    public ResponseEntity getLakeProfile(@PathVariable Long profileId) throws InterruptedException {
         // This simulates a timeout exception because delays lake profile client for one second longer than
         // its 3 second configured read timeout threshold
-        if (getLakeProfileRequestCount < 5) {
+        if (getLakeProfileRequestCount < 2) {
             getLakeProfileRequestCount++;
             Thread.sleep(4000);
         }
